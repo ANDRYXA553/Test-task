@@ -1,0 +1,41 @@
+<div class="wrapper">
+  <div class="create-button-box">
+    <div class="create-button" (click)="openModal()">
+      <div class="create-button-text">Create User</div>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="user-property-titles-block">
+
+      <div class="title-property-box min-w-20">
+        <div class="title-text">Username</div>
+      </div>
+
+      <div class="title-property-box min-w-20">
+        <div class="title-text">First name</div>
+      </div>
+
+      <div class="title-property-box min-w-20">
+        <div class="title-text">Last name</div>
+      </div>
+
+      <div class="title-property-box min-w-30">
+        <div class="title-text">Email</div>
+      </div>
+
+      <div class="title-property-box">
+        <div class="title-text">Type</div>
+      </div>
+
+    </div>
+
+    <div class="user-list-block">
+      <div class="user-list-container">
+
+        <div class="user-list">
+          <app-user-item *ngFor="let user of users$ | async" [user]="user"></app-user-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
