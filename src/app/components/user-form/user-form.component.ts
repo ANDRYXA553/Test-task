@@ -91,7 +91,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
     if (this.createForm.valid) {
       let user = this.createForm.value as User;
       user.id = Date.now();
+
       this.store.dispatch(new UserCreateAction(user));
+
       this.closeModal();
       this.messagesService.setMessage({
         errorMessage: false,
@@ -125,6 +127,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let control = group.controls.userName;
 
       this.storeSub = this.store.pipe(select(selectUsers)).subscribe((value => {
+
+          if (!(control.value)) {
+            return control.setErrors({required: true});
+          }
 
           if (value.find(user => user.userName === control?.value && !this.user)) {
             return control.setErrors({userNameNotUniq: true});
