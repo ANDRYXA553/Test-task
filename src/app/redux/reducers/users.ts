@@ -1,20 +1,10 @@
 import UserList from "../../interfaces/userList";
 import {UsersActions, usersActionType} from "../actions/users";
 
-const mockUser = {
-  id: 111,
-  userName: 'vasya',
-  firstName: 'bebrich',
-  lastName: 'stepan',
-  email: 'zalupkin228@gnail.com',
-  user_type: 'Administrator',
-  password: 'string2222'
-}
-
 export const usersListNode = 'usersList';
 
-const initialState: UserList = {
-  users: [mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser, mockUser]
+const initialState: UserList = localStorage.getItem('usersList') ? JSON.parse(localStorage.getItem('usersList') as string) : {
+  users: []
 }
 
 export const usersReducer = (state = initialState, action: UsersActions) => {
@@ -40,8 +30,16 @@ export const usersReducer = (state = initialState, action: UsersActions) => {
       return {...state, users: [...listAfterUpdate]}
     }
 
+    case usersActionType.saveToLs: {
+      localStorage.setItem('usersList', JSON.stringify(state));
+      return {...state}
+    }
+
     default : {
       return state;
     }
   }
 }
+
+
+

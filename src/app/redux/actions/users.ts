@@ -5,6 +5,7 @@ export enum usersActionType {
   update = 'UPDATE USER',
   delete = 'DELETE USER',
   create = 'CREATE USER',
+  saveToLs = 'SAVE TO LS',
 
 }
 
@@ -20,6 +21,7 @@ export class UserCreateAction implements Action {
 export class UserDeleteAction implements Action {
 
   readonly type = usersActionType.delete;
+
   constructor(public payload: number) {
   }
 
@@ -34,4 +36,11 @@ export class UserUpdateAction implements Action {
 
 }
 
-export type UsersActions = UserCreateAction | UserDeleteAction | UserUpdateAction;
+export class UsersSaveToLsAction implements Action {
+
+  readonly type = usersActionType.saveToLs;
+
+
+}
+
+export type UsersActions = UserCreateAction | UserDeleteAction | UserUpdateAction | UsersSaveToLsAction;

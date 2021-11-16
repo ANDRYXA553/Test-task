@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CreateUserComponent} from "../create-user/create-user.component";
+import {UserFormComponent} from "../user-form/user-form.component";
 import {select, Store} from "@ngrx/store";
 import User from "../../interfaces/user";
 import {selectUsers} from "../../redux/selectors/users";
 import {Observable} from "rxjs";
+import {MessagesService} from "../../sevices/messages.service";
 
 
 @Component({
@@ -15,17 +16,19 @@ import {Observable} from "rxjs";
 export class MainComponent implements OnInit {
 
   users$: Observable<User[]> = this.store.pipe(select(selectUsers));
+  showMessage$: Observable<Boolean> = this.messageService.currentMessage.pipe(select('successMessage'));
 
   constructor(private ngbModal: NgbModal,
-              private store: Store
-  ) {
+              private store: Store,
+              private messageService: MessagesService) {
+
   }
 
   ngOnInit(): void {
   }
 
   openModal() {
-    this.ngbModal.open(CreateUserComponent, {centered: true, size: 'lg'});
+    this.ngbModal.open(UserFormComponent, {centered: true, size: 'lg'});
   }
 
 }

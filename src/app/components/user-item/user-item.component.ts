@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import User from "../../interfaces/user";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CreateUserComponent} from "../create-user/create-user.component";
+import {UserFormComponent} from "../user-form/user-form.component";
 
 @Component({
   selector: 'app-user-item',
@@ -20,7 +20,7 @@ export class UserItemComponent implements OnInit {
   }
 
   openedUserEditModal() {
-    const editComponent = this.ngbModal.open(CreateUserComponent, {centered: true, size: 'lg'});
+    const editComponent = this.ngbModal.open(UserFormComponent, {centered: true, size: 'lg'});
     editComponent.componentInstance.user = this.user;
   }
 }

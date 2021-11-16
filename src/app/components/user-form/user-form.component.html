@@ -1,0 +1,114 @@
+<div class="wrapper">
+
+  <div class="modal-title-box">
+    <div class="modal-title-text">
+      {{user ? user.firstName + ' ' + user.lastName : 'Create new user'}}
+    </div>
+    <div class="cross-box">
+      <div class="cross-item" (click)="closeModal()"></div>
+
+    </div>
+
+  </div>
+  <div class="form-container">
+    <form [formGroup]="createForm" (ngSubmit)="submitForm()">
+      <div class="input-box">
+
+        <label for="userName" class="input-label">Username*</label>
+        <input formControlName="userName" id="userName" type="text"
+               [ngClass]=" checkValidity('userName')?'input-error':'input-default'">
+        <label for="userName" class="input-label-error" *ngIf="checkValidity('userName', 'require')">This input is
+          required!</label>
+        <label for="userName" class="input-label-error" *ngIf="checkValidity('userName', 'uniq')">Sorry this name is
+          already registered!</label>
+
+      </div>
+      <div class="input-box">
+
+        <label for="firstName" class="input-label">First name*</label>
+        <input formControlName="firstName" id="firstName" type="text"
+               [ngClass]=" checkValidity('firstName')?'input-error':'input-default'">
+        <label for="firstName" class="input-label-error" *ngIf="checkValidity('firstName')">This input is
+          required!</label>
+      </div>
+      <div class="input-box">
+
+        <label for="lastName" class="input-label">Last name*</label>
+        <input formControlName="lastName" id="lastName" type="text"
+               [ngClass]=" checkValidity('lastName')?'input-error':'input-default'">
+        <label for="lastName" class="input-label-error" *ngIf="checkValidity('lastName')">This input is
+          required!</label>
+      </div>
+      <div class="input-box">
+
+        <label for="email" class="input-label">Email*</label>
+        <input formControlName="email" id="email" type="text"
+               [ngClass]=" checkValidity('email')?'input-error':'input-default'">
+        <label for="email" class="input-label-error" *ngIf="checkValidity('email', 'require')">This input is
+          required!</label>
+        <label for="email" class="input-label-error" *ngIf="checkValidity('email', 'email')">Please enter a
+          valid email address</label>
+
+      </div>
+
+      <div class="input-box">
+
+        <label class="input-label">Type*</label>
+        <div class="select-type">
+          <div class="input-default"
+               [ngClass]=" checkValidity('user_type')?'input-error':'input-default'"
+               (click)="this.isSelectOpened =!this.isSelectOpened "> {{selectedRole ? selectedRole : ''}}</div>
+          <div [ngClass]=" isSelectOpened? 'select-arrow-rotated':'select-arrow'"></div>
+          <div class="drop-down-options" *ngIf="isSelectOpened">
+            <div class="drop-down-item" (click)="selectRole(false)">Driver</div>
+            <div class="drop-down-item" (click)="selectRole(true)">Admin</div>
+          </div>
+        </div>
+
+        <label class="input-label-error" *ngIf="checkValidity('user_type')">This input is
+          required!</label>
+      </div>
+      <div class="input-box">
+
+        <label for="password" class="input-label">Password*</label>
+        <input formControlName="password" id="password" type="password"
+               [ngClass]=" checkValidity('password')?'input-error':'input-default'">
+        <label for="password" class="input-label-error-password" *ngIf="checkValidity('password', 'require')">This
+          input is
+          required!</label>
+        <label for="password" class="input-label-error-password" *ngIf="checkValidity('password', 'pattern')">Min
+          length 8. And least one number and one letter!</label>
+
+      </div>
+      <div class="input-box">
+
+        <label for="repeat-password" class="input-label">Repeat password*</label>
+        <input formControlName="repeat_password" id="repeat-password" type="password"
+               [ngClass]=" checkValidity('repeat_password')? 'input-error' :'input-default'">
+        <label for="repeat-password" class="input-label-error-password"
+               *ngIf="checkValidity('repeat_password', 'require')">This input is required!</label>
+        <label for="repeat-password" class="input-label-error-password"
+               *ngIf="checkValidity('repeat_password', 'password-equal')">
+          Passwords are not equal!</label>
+
+      </div>
+
+
+      <div *ngIf="!user" class="create-button-box-modal">
+        <div class="create-button mt-17 mb-0" (click)="submitForm()">
+          <div class="create-button-text"> Create</div>
+        </div>
+      </div>
+      <div *ngIf="user" class="update-button-box-modal">
+        <div class="create-button mt-17 mb-0 delete-btn-color" (click)="deleteUser()">
+          <div class="create-button-text"> Delete</div>
+        </div>
+        <div class="create-button mt-17  mb-0" (click)="updateUser()">
+          <div class="create-button-text"> Save</div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</div>

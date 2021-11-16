@@ -11,3 +11,5 @@ export interface State {
 export const reducer: ActionReducerMap<State, UsersActions> = {
   [usersListNode]: usersReducer
 }
+
+

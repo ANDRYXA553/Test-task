@@ -6,19 +6,20 @@ import {select, Store} from "@ngrx/store";
 import {UserCreateAction, UserDeleteAction, UserUpdateAction} from "../../redux/actions/users";
 import {selectUsers} from "../../redux/selectors/users";
 import {Subscription} from "rxjs";
+import {MessagesService} from "../../sevices/messages.service";
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.sass', '../main/main.component.sass']
+  selector: 'app-user-form',
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.sass', '../main/main.component.sass']
 })
 
 
-export class CreateUserComponent implements OnInit, OnDestroy {
+export class UserFormComponent implements OnInit, OnDestroy {
 
   @Input() user: User;
   isFormSubmited = false;
-  selectedRole: null | string =null
+  selectedRole: null | string = null
   isSelectOpened = false;
   storeSub: Subscription;
 
@@ -27,10 +28,10 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   constructor(
     private activeModal: NgbActiveModal,
     private fb: FormBuilder,
-    private store: Store
+    private store: Store,
+    private messagesService: MessagesService
   ) {
     this.createFormFunc();
-
 
   }
 
@@ -41,13 +42,16 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   selectRole(isAdmin: boolean) {
 
     isAdmin ? this.selectedRole = 'Admin' : this.selectedRole = 'Driver';
+
     this.isSelectOpened = false;
+
     this.createForm.patchValue({
       ...this.createForm.value, user_type: this.selectedRole
     });
   }
 
   setUserFromState() {
+
     if (this.user) {
       this.createForm.patchValue({
         userName: this.user.userName,
@@ -64,6 +68,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   }
 
   createFormFunc() {
+
     this.createForm = this.fb.group({
         userName: ['', Validators.compose([Validators.required])],
         firstName: ['', Validators.compose([Validators.required])],
@@ -88,11 +93,13 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       user.id = Date.now();
       this.store.dispatch(new UserCreateAction(user));
       this.closeModal();
+      this.messagesService.setMessage({errorMessage: false, successMessage: true});
     }
   }
 
   checkEqual(password: string, confirmPass: string) {
     return (group: FormGroup) => {
+
       let passwordInput = group.controls[password], passwordConfirmationInput = group.controls[confirmPass];
 
       if (!(passwordConfirmationInput.value)) {
@@ -100,7 +107,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       }
 
       if (passwordInput.value !== passwordConfirmationInput.value && passwordConfirmationInput.value) {
-
         return passwordConfirmationInput.setErrors({notEquivalent: true});
 
       } else {
@@ -115,8 +121,10 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       let control = group.controls.userName;
 
       this.storeSub = this.store.pipe(select(selectUsers)).subscribe((value => {
+
           if (value.find(user => user.userName === control?.value && !this.user)) {
             return control.setErrors({userNameNotUniq: true});
+
           } else {
             return control.setErrors(null);
           }
@@ -133,9 +141,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
 
     for (const controlKey in this.createForm.controls) {
 
-
       if (control === controlKey && errorType === 'require') {
-
         return (this.createForm.controls[control].errors?.required && this.isFormSubmited);
       }
 
@@ -148,42 +154,39 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       }
 
       if (control === controlKey && errorType === 'password-equal') {
-
         return this.createForm.controls.repeat_password.errors?.notEquivalent && this.isFormSubmited;
-
       }
 
       if (control === controlKey && errorType === 'uniq') {
-
         return this.createForm.controls.userName.errors?.userNameNotUniq && this.isFormSubmited;
-
       }
 
       if (control === controlKey) {
         return (this.createForm.controls[control].errors && this.isFormSubmited);
       }
     }
-
   }
 
   deleteUser() {
     if (this.user) {
       this.store.dispatch(new UserDeleteAction(this.user.id));
       this.activeModal.close();
+      this.messagesService.setMessage({errorMessage: false, successMessage: true});
     }
   }
 
   updateUser() {
     this.isFormSubmited = true
+
     if (this.createForm.valid) {
       let user = {...this.user, ...this.createForm.value};
       delete user['repeat_password'];
 
       this.store.dispatch(new UserUpdateAction(user as User));
       this.activeModal.close();
+      this.messagesService.setMessage({errorMessage: false, successMessage: true});
 
     }
-
   }
 
   ngOnDestroy() {

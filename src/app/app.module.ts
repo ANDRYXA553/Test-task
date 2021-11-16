@@ -4,12 +4,14 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {MainComponent} from "./components/main/main.component";
 import {RouterModule, Routes} from "@angular/router";
-import { UserItemComponent } from './components/user-item/user-item.component';
-import { CreateUserComponent } from './components/create-user/create-user.component';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {UserItemComponent} from './components/user-item/user-item.component';
+import {UserFormComponent} from './components/user-form/user-form.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ReactiveFormsModule} from "@angular/forms";
-import { StoreModule } from '@ngrx/store';
+import {StoreModule} from '@ngrx/store';
 import {reducer} from "./redux/reducers";
+import { EffectsModule } from '@ngrx/effects';
+import {UserEffects} from "./redux/effects/user";
 
 const routes: Routes = [
   {path: '', component: MainComponent}
@@ -20,7 +22,7 @@ const routes: Routes = [
     AppComponent,
     MainComponent,
     UserItemComponent,
-    CreateUserComponent,
+    UserFormComponent,
   ],
   imports: [
     NgbModule,
@@ -28,7 +30,8 @@ const routes: Routes = [
     RouterModule,
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
-    StoreModule.forRoot(reducer, {})
+    StoreModule.forRoot(reducer, {}),
+    EffectsModule.forRoot([UserEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
