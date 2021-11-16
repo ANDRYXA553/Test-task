@@ -93,7 +93,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
       user.id = Date.now();
       this.store.dispatch(new UserCreateAction(user));
       this.closeModal();
-      this.messagesService.setMessage({errorMessage: false, successMessage: true});
+      this.messagesService.setMessage({
+        errorMessage: false,
+        successMessage: true,
+        textOfMessage: 'User create successful.'
+      });
     }
   }
 
@@ -171,7 +175,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.store.dispatch(new UserDeleteAction(this.user.id));
       this.activeModal.close();
-      this.messagesService.setMessage({errorMessage: false, successMessage: true});
+      this.messagesService.setMessage({
+        errorMessage: false,
+        successMessage: true,
+        textOfMessage: 'User delete successful'
+      });
     }
   }
 
@@ -184,7 +192,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
       this.store.dispatch(new UserUpdateAction(user as User));
       this.activeModal.close();
-      this.messagesService.setMessage({errorMessage: false, successMessage: true});
+      this.messagesService.setMessage({
+        errorMessage: false,
+        successMessage: true,
+        textOfMessage: 'User update successful'
+      });
 
     }
   }

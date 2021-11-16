@@ -17,6 +17,8 @@ export class MainComponent implements OnInit {
 
   users$: Observable<User[]> = this.store.pipe(select(selectUsers));
   showMessage$: Observable<Boolean> = this.messageService.currentMessage.pipe(select('successMessage'));
+  errorMessage$: Observable<Boolean> = this.messageService.currentMessage.pipe(select('errorMessage'));
+  textOfMessage$: Observable<string> = this.messageService.currentMessage.pipe(select('textOfMessage'));
 
   constructor(private ngbModal: NgbModal,
               private store: Store,

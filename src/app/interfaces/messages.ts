@@ -1,4 +1,5 @@
 export default interface Messages {
   errorMessage: boolean,
-  successMessage: boolean
+  successMessage: boolean,
+  textOfMessage: string
 }

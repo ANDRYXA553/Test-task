@@ -5,6 +5,7 @@ import Messages from "../interfaces/messages";
 const initialSubject = {
   errorMessage: false,
   successMessage: false,
+  textOfMessage: ''
 }
 
 @Injectable({
